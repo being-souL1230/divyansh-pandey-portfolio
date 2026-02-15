@@ -54,7 +54,7 @@ export function ContactForm() {
               <FormItem>
                 <FormLabel className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Name</FormLabel>
                 <FormControl>
-                  <Input className="h-9 rounded-lg bg-background/35" {...field} />
+                  <Input className="h-9 rounded-lg bg-background/35" placeholder="Your Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,7 +67,7 @@ export function ContactForm() {
               <FormItem>
                 <FormLabel className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Email</FormLabel>
                 <FormControl>
-                  <Input className="h-9 rounded-lg bg-background/35" {...field} />
+                  <Input className="h-9 rounded-lg bg-background/35" placeholder="yourmail@gmail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -83,6 +83,7 @@ export function ContactForm() {
               <FormControl>
                 <Textarea 
                   className="min-h-[116px] rounded-lg bg-background/35" 
+                  placeholder="Your message here..."
                   {...field} 
                 />
               </FormControl>
@@ -92,7 +93,8 @@ export function ContactForm() {
         />
         <Button 
           type="submit" 
-          className="h-8 w-auto gap-1 rounded-md border border-border/60 bg-transparent px-2.5 text-xs font-semibold"
+          variant="ghost"
+          className="h-8 w-auto gap-1 rounded-md border border-border/60 !bg-transparent px-2.5 text-[11px] font-semibold text-foreground transition-colors hover:border-primary/50 hover:!bg-transparent"
           disabled={mutation.isPending}
         >
           {mutation.isPending ? (
