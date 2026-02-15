@@ -1,0 +1,165 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Manrope", sans-serif;
+  --font-display: "Sora", sans-serif;
+
+  /* Editor-card inspired deep teal palette */
+  --background: 204 100% 11%;
+  --foreground: 180 34% 92%;
+
+  --card: 200 78% 16%;
+  --card-foreground: 180 34% 92%;
+  --popover: 200 78% 16%;
+  --popover-foreground: 180 34% 92%;
+  
+  --primary: 191 100% 48%;
+  --primary-foreground: 205 100% 11%;
+  
+  --secondary: 197 78% 24%;
+  --secondary-foreground: 180 34% 92%;
+  
+  --muted: 201 45% 22%;
+  --muted-foreground: 190 18% 76%;
+  
+  --accent: 46 96% 56%;
+  --accent-foreground: 205 100% 11%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 197 40% 31%;
+  --input: 197 40% 31%;
+  --ring: 191 100% 48%;
+  --card-border: hsl(var(--border) / 0.7);
+  --popover-border: hsl(var(--border) / 0.7);
+  --primary-border: hsl(var(--primary) / 0.5);
+  --secondary-border: hsl(var(--secondary) / 0.45);
+  --button-outline: hsl(var(--border) / 0.85);
+  --badge-outline: hsl(var(--border) / 0.85);
+  
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 189 63% 18%;
+  --foreground: 180 36% 92%;
+
+  --card: 190 58% 22%;
+  --card-foreground: 180 36% 92%;
+  --popover: 190 58% 22%;
+  --popover-foreground: 180 36% 92%;
+  
+  --primary: 194 95% 50%;
+  --primary-foreground: 191 68% 14%;
+  
+  --secondary: 162 60% 36%;
+  --secondary-foreground: 180 36% 92%;
+  
+  --muted: 188 36% 28%;
+  --muted-foreground: 180 20% 74%;
+  
+  --accent: 170 74% 45%;
+  --accent-foreground: 191 68% 14%;
+  
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 210 40% 98%;
+  
+  --border: 189 31% 36%;
+  --input: 189 31% 36%;
+  --ring: 194 95% 50%;
+  --card-border: hsl(var(--border) / 0.7);
+  --popover-border: hsl(var(--border) / 0.7);
+  --primary-border: hsl(var(--primary) / 0.5);
+  --secondary-border: hsl(var(--secondary) / 0.45);
+  --button-outline: hsl(var(--border) / 0.85);
+  --badge-outline: hsl(var(--border) / 0.85);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 15% 20%, hsl(var(--primary) / 0.08), transparent 30%),
+      radial-gradient(circle at 80% 12%, hsl(var(--accent) / 0.07), transparent 25%),
+      linear-gradient(to bottom, hsl(var(--background)), hsl(var(--background)));
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.32);
+    color: hsl(var(--foreground));
+  }
+
+  * {
+    scrollbar-color: hsl(var(--primary) / 0.65) hsl(var(--muted) / 0.4);
+    scrollbar-width: thin;
+  }
+
+  *::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: hsl(var(--muted) / 0.35);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--accent)));
+    border-radius: 999px;
+    border: 2px solid hsl(var(--muted) / 0.35);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-primary bg-300% animate-gradient;
+  }
+  
+  .glass-card {
+    @apply border border-primary/15 bg-primary/10 shadow-xl backdrop-blur-md;
+  }
+
+  .section-badge {
+    @apply inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary;
+  }
+
+  .hover-elevate {
+    @apply transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_24px_hsl(var(--primary)/0.24)];
+  }
+
+  .active-elevate-2 {
+    @apply active:translate-y-0 active:shadow-[0_2px_10px_hsl(var(--primary)/0.2)];
+  }
+
+  .shadcn-card {
+    background: linear-gradient(165deg, hsl(var(--card) / 0.98), hsl(var(--card) / 0.84));
+    box-shadow:
+      0 1px 0 hsl(var(--border) / 0.2) inset,
+      0 16px 40px hsl(0 0% 0% / 0.24);
+    backdrop-filter: blur(6px);
+  }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  animation: gradient 8s ease infinite;
+  background-size: 300% 300%;
+}
