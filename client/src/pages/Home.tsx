@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link as ScrollLink } from "react-scroll";
 import profileImage from "@/assets/divyansh_profile.png";
+import resumePdf from "@/assets/DIVYANSH_PANDEY_RESUME.pdf";
 
 const GITHUB_PROFILE_URL = "https://github.com/divyansh-data-analyst";
 const EXCEL_PROJECT_GITHUB_URL = "https://github.com/divyansh-data-analyst/excel-sales-analysis";
@@ -501,8 +502,11 @@ export default function Home() {
                   <Button
                     variant="ghost"
                     className="relative h-10 overflow-hidden rounded-lg border border-white/30 bg-white/10 px-4 text-sm text-foreground backdrop-blur-md transition-all before:absolute before:inset-y-0 before:left-[-130%] before:w-1/2 before:skew-x-[-20deg] before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:transition-all before:duration-700 hover:border-white/50 hover:bg-white/18 hover:before:left-[130%]"
+                    asChild
                   >
-                    <Download className="h-4 w-4" /> Download Resume
+                    <a href={resumePdf} download="Divyansh_Pandey_Resume.pdf">
+                      <Download className="h-4 w-4" /> Download Resume
+                    </a>
                   </Button>
                   <ScrollLink to="projects" smooth={true} offset={-100} duration={500}>
                     <Button

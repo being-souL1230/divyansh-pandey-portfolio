@@ -7,13 +7,6 @@ build/
 client/dist/
 server/public/
 
-# Caches
-.vite/
-.cache/
-.turbo/
-coverage/
-*.tsbuildinfo
-
 # Environment files
 .env
 .env.local
