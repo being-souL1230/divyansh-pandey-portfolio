@@ -22,11 +22,12 @@ export function Navigation() {
 
       const scrollY = window.scrollY + 140;
       let current = "home";
-      for (const link of navLinks) {
-        const el = document.getElementById(link.to);
+      const trackedSections = [...navLinks.map((link) => link.to), "contact"];
+      for (const sectionId of trackedSections) {
+        const el = document.getElementById(sectionId);
         if (!el) continue;
         if (scrollY >= el.offsetTop) {
-          current = link.to;
+          current = sectionId;
         }
       }
       setActiveSection(current);
@@ -81,7 +82,13 @@ export function Navigation() {
             </ScrollLink>
           ))}
           <ScrollLink to="contact" smooth={true} offset={-50} duration={500}>
-            <Button className="relative overflow-hidden rounded-full border border-primary/35 bg-primary/85 px-6 text-primary-foreground shadow-md shadow-primary/30 transition-all hover:bg-primary hover:shadow-lg hover:shadow-primary/35 before:absolute before:inset-y-0 before:left-[-130%] before:w-1/2 before:skew-x-[-20deg] before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:transition-all before:duration-700 hover:before:left-[130%]">
+            <Button
+              className={`relative overflow-hidden rounded-full border px-6 text-primary-foreground transition-all before:absolute before:inset-y-0 before:left-[-130%] before:w-1/2 before:skew-x-[-20deg] before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:transition-all before:duration-700 hover:before:left-[130%] ${
+                activeSection === "contact"
+                  ? "border-primary/45 bg-primary shadow-lg shadow-primary/35"
+                  : "border-primary/35 bg-primary/85 shadow-md shadow-primary/30 hover:bg-primary hover:shadow-lg hover:shadow-primary/35"
+              }`}
+            >
               Contact Me
             </Button>
           </ScrollLink>
