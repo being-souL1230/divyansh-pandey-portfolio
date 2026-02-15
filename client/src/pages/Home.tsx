@@ -218,7 +218,7 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7 }}
-              className="relative lg:-mt-28"
+              className="relative lg:-mt-20"
             >
               <div className="relative mx-auto w-full max-w-md overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-2xl">
                 <img
