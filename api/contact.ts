@@ -1,15 +1,25 @@
+import type { IncomingMessage, ServerResponse } from "node:http";
+
 type ContactPayload = {
   name?: string;
   email?: string;
   message?: string;
 };
 
-function json(status: number, body: unknown) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-    },
+function sendJson(res: ServerResponse, status: number, body: unknown) {
+  res.statusCode = status;
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(body));
+}
+
+function readRawBody(req: IncomingMessage): Promise<string> {
+  return new Promise((resolve, reject) => {
+    let data = "";
+    req.on("data", (chunk) => {
+      data += chunk;
+    });
+    req.on("end", () => resolve(data));
+    req.on("error", reject);
   });
 }
 
@@ -26,9 +36,10 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-export default async function handler(req: Request) {
+export default async function handler(req: IncomingMessage & { body?: unknown }, res: ServerResponse) {
   if (req.method !== "POST") {
-    return json(405, { message: "Method not allowed" });
+    sendJson(res, 405, { message: "Method not allowed" });
+    return;
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -36,25 +47,43 @@ export default async function handler(req: Request) {
   const fromEmail = process.env.CONTACT_FROM_EMAIL || "Portfolio Contact <onboarding@resend.dev>";
 
   if (!apiKey || !toEmail) {
-    return json(500, {
+    sendJson(res, 500, {
       message: "Email service is not configured. Set RESEND_API_KEY and CONTACT_TO_EMAIL.",
     });
+    return;
   }
 
   let payload: ContactPayload;
   try {
-    payload = (await req.json()) as ContactPayload;
+    if (req.body && typeof req.body === "object") {
+      payload = req.body as ContactPayload;
+    } else if (typeof req.body === "string" && req.body.trim()) {
+      payload = JSON.parse(req.body) as ContactPayload;
+    } else {
+      const raw = await readRawBody(req);
+      payload = raw ? (JSON.parse(raw) as ContactPayload) : {};
+    }
   } catch {
-    return json(400, { message: "Invalid JSON body" });
+    sendJson(res, 400, { message: "Invalid JSON body" });
+    return;
   }
 
   const name = (payload.name || "").trim();
   const email = (payload.email || "").trim();
   const message = (payload.message || "").trim();
 
-  if (name.length < 2) return json(400, { message: "Name must be at least 2 characters", field: "name" });
-  if (!isValidEmail(email)) return json(400, { message: "Invalid email address", field: "email" });
-  if (message.length < 10) return json(400, { message: "Message must be at least 10 characters", field: "message" });
+  if (name.length < 2) {
+    sendJson(res, 400, { message: "Name must be at least 2 characters", field: "name" });
+    return;
+  }
+  if (!isValidEmail(email)) {
+    sendJson(res, 400, { message: "Invalid email address", field: "email" });
+    return;
+  }
+  if (message.length < 10) {
+    sendJson(res, 400, { message: "Message must be at least 10 characters", field: "message" });
+    return;
+  }
 
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
@@ -85,8 +114,9 @@ export default async function handler(req: Request) {
 
   if (!resendResponse.ok) {
     const errorText = await resendResponse.text();
-    return json(500, { message: `Email send failed: ${errorText}` });
+    sendJson(res, 500, { message: `Email send failed: ${errorText}` });
+    return;
   }
 
-  return json(200, { success: true, message: "Message sent successfully" });
+  sendJson(res, 200, { success: true, message: "Message sent successfully" });
 }
