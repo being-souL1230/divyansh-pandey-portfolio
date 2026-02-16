@@ -92,13 +92,28 @@ export function useContactMutation() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      
+
+      const contentType = res.headers.get("content-type") || "";
+      const isJson = contentType.includes("application/json");
+      const payload = isJson ? await res.json() : await res.text();
+
       if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || "Failed to send message");
+        if (isJson && typeof payload === "object" && payload && "message" in payload) {
+          throw new Error(String((payload as { message?: string }).message || "Failed to send message"));
+        }
+
+        if (typeof payload === "string" && payload.trim().startsWith("<")) {
+          throw new Error("Contact API is not available on the live site yet. Deploy backend /api/contact.");
+        }
+
+        throw new Error("Failed to send message");
       }
-      
-      return await res.json();
+
+      if (!isJson) {
+        throw new Error("Invalid server response from contact API");
+      }
+
+      return payload;
     },
     onSuccess: () => {
       toast({

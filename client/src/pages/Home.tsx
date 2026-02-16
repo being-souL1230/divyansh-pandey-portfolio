@@ -473,14 +473,14 @@ export default function Home() {
               </p>
 
               <div className="max-w-lg">
-                <a href="mailto:myselfdivyanshpandey@gmail.com" className="group flex items-center gap-3 border-b border-border/60 py-3">
+                <a href="mailto:divyansh.pandey4564@gmail.com" className="group flex items-center gap-3 border-b border-border/60 py-3">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/25 text-primary">
                     <Mail className="h-3.5 w-3.5" />
                   </span>
                   <span className="min-w-0">
                     <span className="block text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Email</span>
                     <span className="block truncate text-sm font-semibold text-foreground/95 transition-colors group-hover:text-primary">
-                      myselfdivyanshpandey@gmail.com
+                      divyansh.pandey4564@gmail.com
                     </span>
                   </span>
                 </a>
