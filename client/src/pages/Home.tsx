@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link as ScrollLink } from "react-scroll";
-import profileImage from "@/assets/divyansh_profile.png";
+import profileImage from "@/assets/divyansh_profile.jpeg";
 import resumePdf from "@/assets/DIVYANSH_PANDEY_RESUME.pdf";
 
 const GITHUB_PROFILE_URL = "https://github.com/divyansh-data-analyst";
